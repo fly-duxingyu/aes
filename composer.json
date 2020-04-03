@@ -1,0 +1,37 @@
+{
+  "name": "duxingyu/aes",
+  "description": "",
+  "type": "lib",
+  "require": {
+    "php": ">=5.4",
+    "illuminate/support": "5.*|6.*|7.*"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "duxingyu",
+      "email": "530606930@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Aes\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Aes\\": "test"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.0-dev"
+    },
+    "laravel": {
+      "providers": [
+        "Aes\\Providers\\AesProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev"
+}

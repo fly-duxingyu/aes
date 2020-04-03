@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AesProvider extends ServiceProvider
 {
-    protected $key;
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -24,16 +23,14 @@ class AesProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->key) {
-            // Config path.
-            $config_path = __DIR__ . '/../../config/aes.php';
+        // Config path.
+        $config_path = __DIR__ . '/../../config/aes.php';
 
-            // Publish config.
-            $this->publishes(
-                [$config_path => config_path('aes.php')],
-                'aes'
-            );
-        }
+        // Publish config.
+        $this->publishes(
+            [$config_path => config_path('aes.php')],
+            'aes'
+        );
     }
 
     /**
@@ -43,19 +40,15 @@ class AesProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->key = isset($this->app['config']['app']['key']) && $this->app['config']['app']['key'] ? $this->app['config']['app']['key'] : '';
-        if (!$this->key) {
-            //获取配置文件
-            $config_path = __DIR__ . '/../../config/aes.php';
-            // 合并配置文件
-            $this->mergeConfigFrom(
-                $config_path,
-                'aes'
-            );
-            $this->key = $this->app['config']['aes']['KEY'];
-        }
+        //获取配置文件
+        $config_path = __DIR__ . '/../../config/aes.php';
+        // 合并配置文件
+        $this->mergeConfigFrom(
+            $config_path,
+            'aes'
+        );
         $this->app->singleton('aes', function ($app) {
-            return new AesPhp($this->key);
+            return AesPhp::init($app['config']['aes']['KEY']);
         });
 
     }
