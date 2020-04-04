@@ -8,10 +8,6 @@ use ErrorException;
 
 class AesPhp
 {
-    /**
-     * @var AesPhp
-     */
-    private static $_aes_Obj;
     private $_string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
     /**
      * var string $method 加解密方法，可通过openssl_get_cipher_methods()获得
@@ -58,19 +54,6 @@ class AesPhp
 
         $this->method = $method;
         $this->options = $options;
-    }
-
-    /**
-     * @param $key
-     * @return AesPhp
-     * @throws \Exception
-     */
-    public static function init($key)
-    {
-        if (!self::$_aes_Obj instanceof AesPhp) {
-            self::$_aes_Obj = new self($key);
-        }
-        return self::$_aes_Obj;
     }
 
     /**

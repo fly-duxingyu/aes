@@ -48,7 +48,7 @@ class AesProvider extends ServiceProvider
             'aes'
         );
         $this->app->singleton('aes', function ($app) {
-            return AesPhp::init($app['config']['aes']['KEY']);
+            return new AesPhp($app['config']['aes']['KEY']);
         });
 
     }
