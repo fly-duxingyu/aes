@@ -8,6 +8,9 @@ use ErrorException;
 
 class AesPhp
 {
+    /**
+     * @var AesPhp
+     */
     private static $_aes_Obj;
     private $_string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
     /**
@@ -57,9 +60,14 @@ class AesPhp
         $this->options = $options;
     }
 
+    /**
+     * @param $key
+     * @return AesPhp
+     * @throws \Exception
+     */
     public static function init($key)
     {
-        if (!self::$_aes_Obj instanceof Self) {
+        if (!self::$_aes_Obj instanceof AesPhp) {
             self::$_aes_Obj = new self($key);
         }
         return self::$_aes_Obj;
