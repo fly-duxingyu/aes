@@ -8,7 +8,7 @@ use ErrorException;
 
 class AesPhp
 {
-    private $_string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
+    private $string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
     /**
      * var string $method 加解密方法，可通过openssl_get_cipher_methods()获得
      */
@@ -45,7 +45,7 @@ class AesPhp
     {
         if (in_array(strtolower($method), openssl_get_cipher_methods())) {
             $length = openssl_cipher_iv_length($method);//获取iv的长度 随机生成 iv字符串
-            $this->iv = substr(str_shuffle($this->_string), mt_rand(0, strlen($this->_string) - $length), $length);
+            $this->iv = substr(str_shuffle($this->string), mt_rand(0, strlen($this->string) - $length), $length);
         } else {
             throw new ErrorException('加密类型错误');
         }
@@ -88,10 +88,9 @@ class AesPhp
     public function decrypt($data)
     {
         $payload = json_decode(base64_decode($data), true);
-
         $data = \openssl_decrypt(
             $payload['value'], $this->method, $this->secret_key, $this->options, $payload['iv']
         );
-        return is_string($data) ? json_decode($data, true) : $data;
+        return is_array($data) ? json_encode($data) : $data;
     }
 }

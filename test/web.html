@@ -12,33 +12,31 @@
     //aes加密
     function encrypt(data) {
         if (typeof (data) == 'object' && data.constructor == Array) {
-            alert('自能传递josn格式')
-
-        } else {
-            var iv = Array.from(iv_string).sort(() => 0.5 - Math.random()).join('').substr(Math.floor(Math.random() * (iv_string.length - 16)), 16);
-            var encrypted = '';
-            if (typeof (data) == 'string') {
-                var srcs = CryptoJS.enc.Utf8.parse(data);
-                encrypted = CryptoJS.AES.encrypt(srcs, key, {
-                    iv: CryptoJS.enc.Utf8.parse(iv),
-                    mode: CryptoJS.mode.CBC,
-                    padding: CryptoJS.pad.Pkcs7
-                });
-            } else {
-                data = JSON.stringify(data);
-                var srcs = CryptoJS.enc.Utf8.parse(data);
-                encrypted = CryptoJS.AES.encrypt(srcs, key, {
-                    iv: CryptoJS.enc.Utf8.parse(iv),
-                    mode: CryptoJS.mode.CBC,
-                    padding: CryptoJS.pad.Pkcs7
-                })
-            }
-            encrypted = encrypted.toString();
-            var new_data = {};
-            new_data.iv = iv;
-            new_data.value = encrypted;
-            return Base64.encode(JSON.stringify(new_data));
+            data = JSON.stringify(data);
         }
+        var iv = Array.from(iv_string).sort(() => 0.5 - Math.random()).join('').substr(Math.floor(Math.random() * (iv_string.length - 16)), 16);
+        var encrypted = '';
+        if (typeof (data) == 'string') {
+            var srcs = CryptoJS.enc.Utf8.parse(data);
+            encrypted = CryptoJS.AES.encrypt(srcs, key, {
+                iv: CryptoJS.enc.Utf8.parse(iv),
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        } else {
+            data = JSON.stringify(data);
+            var srcs = CryptoJS.enc.Utf8.parse(data);
+            encrypted = CryptoJS.AES.encrypt(srcs, key, {
+                iv: CryptoJS.enc.Utf8.parse(iv),
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            })
+        }
+        encrypted = encrypted.toString();
+        var new_data = {};
+        new_data.iv = iv;
+        new_data.value = encrypted;
+        return Base64.encode(JSON.stringify(new_data));
 
     }
 
@@ -46,7 +44,11 @@
     data.id = 23;
     data.name = 'dsfsd';
     data.sdsa = 4324543;
-    console.log(encrypt(data));
+    var mycars = new Array()
+    mycars[0] = "Saab"
+    mycars[1] = "Volvo"
+    mycars[2] = "BMW"
+    console.log(encrypt(mycars));
 
     // aes解密
     function decrypt(data) {
@@ -61,8 +63,8 @@
         return JSON.parse(decryptedStr.toString());
     }
 
-    // var s = decrypt('eyJpdiI6IkE1bHVyPThnVVBmaTRoTUUiLCJ2YWx1ZSI6IlNVR2hmeHQyXC85RG9Xc3ZsMlBQRElCTmtyMUlZOTFEVWxDVmUxVFpnbThXemRGOXhYeXg2V1JDK0YxeEVkMUFoIn0=');
-    // console.log(s);
+    var s = decrypt('eyJpdiI6Ikd4SG9EdEdRbTlwYTVsT0kiLCJ2YWx1ZSI6InNwZ0FUc0RUdEZCeUNHWnZYTWN4ZHc9PSJ9');
+    console.log(s);
 </script>
 
 
