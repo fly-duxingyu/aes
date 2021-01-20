@@ -67,7 +67,7 @@ class Aes
             throw new ErrorException('加密类型错误');
         }
         // key是必须要设置的
-        $this->secret_key =$key ? $key : config('aesConfig.key');
+        $this->secret_key =$key ? $key :( config('aesConfig.key')?:'robertvivi');
 
         $this->method = $method;
         $this->options = $options;
