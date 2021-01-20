@@ -35,7 +35,7 @@ class Aes
      */
     private static $obj;
 
-    public static function init(string $key, $method = 'AES-128-CBC', $options = 0, $iv = '')
+    public static function init(string $key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
     {
         if (!self::$obj instanceof self) {
             try {
@@ -58,7 +58,7 @@ class Aes
      * @param string $iv iv向量
      * @throws ErrorException
      */
-    private function __construct(string $key='', $method = 'AES-128-CBC', $options = 0, $iv = '')
+    private function __construct(string $key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
     {
         if (in_array(strtolower($method), openssl_get_cipher_methods())) {
             $length = openssl_cipher_iv_length($method);//获取iv的长度 随机生成 iv字符串
@@ -67,7 +67,7 @@ class Aes
             throw new ErrorException('加密类型错误');
         }
         // key是必须要设置的
-        $this->secret_key =$key ? $key :( config('aesConfig.key')?:'robertvivi');
+        $this->secret_key = $key ? $key : (config('aesConfig.key') ?: 'robertvivi');
 
         $this->method = $method;
         $this->options = $options;
