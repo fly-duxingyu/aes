@@ -1,12 +1,13 @@
 <?php
 
 
-namespace Aes\Php;
+namespace Duxingyu\Aes\php;
 
 
 use ErrorException;
+use phpDocumentor\Reflection\Types\This;
 
-class AesPhp
+class Aes
 {
     private $string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
     /**
@@ -29,19 +30,35 @@ class AesPhp
      */
     protected $options;
     protected $tag;
+    /**
+     * @var this
+     */
+    private static $obj;
+
+    public static function init(string $key, $method = 'AES-128-CBC', $options = 0, $iv = '')
+    {
+        if (!self::$obj instanceof self) {
+            try {
+                self::$obj = new self($key, $method, $options, $iv);
+            } catch (ErrorException $e) {
+                throw new ErrorException($e->getMessage());
+            }
+
+        }
+        return self::$obj;
+    }
 
     /**
      * 构造函数
      *
      * @param string $key 密钥
      * @param string $method 加密方式
-     * @param string $iv iv向量
      * @param mixed $options 还不是很清楚
      *
-     * @throws Exception
-     * @throws \Exception
+     * @param string $iv iv向量
+     * @throws ErrorException
      */
-    public function __construct($key, $method = 'AES-128-CBC', $options = 0, $iv = '')
+    private function __construct(string $key='', $method = 'AES-128-CBC', $options = 0, $iv = '')
     {
         if (in_array(strtolower($method), openssl_get_cipher_methods())) {
             $length = openssl_cipher_iv_length($method);//获取iv的长度 随机生成 iv字符串
@@ -50,10 +67,11 @@ class AesPhp
             throw new ErrorException('加密类型错误');
         }
         // key是必须要设置的
-        $this->secret_key = isset($key) ? $key : 'c2rFIU3ym8AXJ1aU';
+        $this->secret_key =$key ? $key : config('aesConfig.key');
 
         $this->method = $method;
         $this->options = $options;
+        return $this;
     }
 
     /**
@@ -65,7 +83,7 @@ class AesPhp
      *
      * @throws ErrorException
      */
-    public function encrypt($data)
+    public function encrypt(string $data)
     {
         $data = is_array($data) ? json_encode($data) : $data;
         $value = openssl_encrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
@@ -83,9 +101,8 @@ class AesPhp
      * @param string $data 要解密的数据
      *
      * @return string
-     *
      */
-    public function decrypt($data)
+    public function decrypt(string $data)
     {
         $payload = json_decode(base64_decode($data), true);
         $data = \openssl_decrypt(
