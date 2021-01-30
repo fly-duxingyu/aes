@@ -23,7 +23,7 @@
         },
         "laravel": {
             "providers": [
-                "Duxingyu\\Aes\\providers\\AesConfigServiceProvider"
+                "Duxingyu\\Aes\\Providers\\AesConfigServiceProvider"
             ],
             "aliases": {
             }

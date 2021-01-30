@@ -1,6 +1,6 @@
 <?php
 
-namespace Duxingyu\Aes\providers;
+namespace Duxingyu\Aes\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

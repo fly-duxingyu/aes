@@ -1,9 +1,9 @@
 <?php
 
-namespace Duxingyu\Aes\middleware;
+namespace Duxingyu\Aes\Middleware;
 
 use Closure;
-use Duxingyu\Aes\php\Aes;
+use Duxingyu\Aes\Php\Aes;
 use ErrorException;
 use Illuminate\Http\Request;
 

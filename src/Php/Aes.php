@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Duxingyu\Aes\php;
+namespace Duxingyu\Aes\Php;
 
 
 use ErrorException;
@@ -35,7 +35,15 @@ class Aes
      */
     private static $obj;
 
-    public static function init(string $key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
+    /**
+     * @param string $key
+     * @param string $method
+     * @param int $options
+     * @param string $iv
+     * @return Aes|static
+     * @throws ErrorException
+     */
+    public static function init($key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
     {
         if (!self::$obj instanceof self) {
             try {
@@ -51,14 +59,14 @@ class Aes
     /**
      * 构造函数
      *
-     * @param string $key 密钥
+     * @param string $key //密钥
      * @param string $method 加密方式
      * @param mixed $options 还不是很清楚
      *
      * @param string $iv iv向量
      * @throws ErrorException
      */
-    private function __construct(string $key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
+    private function __construct($key = '', $method = 'AES-128-CBC', $options = 0, $iv = '')
     {
         if (in_array(strtolower($method), openssl_get_cipher_methods())) {
             $length = openssl_cipher_iv_length($method);//获取iv的长度 随机生成 iv字符串
