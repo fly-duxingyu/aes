@@ -14,12 +14,12 @@ class AesConfigServiceProvider extends ServiceProvider
     public function register()
     {
         //获取配置文件
-        $config_path = config_path() . '/aes.php';
+        $config_path = config_path() . '/duxingyuConfig.php';
         if (file_exists($config_path)) {
             // 合并配置文件
             $this->mergeConfigFrom(
                 $config_path,
-                'aesConfig'
+                'duxingyuConfig'
             );
         }
     }
@@ -32,12 +32,12 @@ class AesConfigServiceProvider extends ServiceProvider
     public function boot()
     {
         // Config path.
-        $config_path = config_path() . '/aes.php';
+        $config_path = config_path() . '/duxingyuConfig.php';
         if (file_exists($config_path)) {
             // Publish config.
             $this->publishes(
-                [$config_path => config_path('aesConfig.php')],
-                'aesConfig'
+                [$config_path => config_path('duxingyuConfig.php')],
+                'duxingyuConfig'
             );
         }
 

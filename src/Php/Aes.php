@@ -75,8 +75,7 @@ class Aes
             throw new ErrorException('加密类型错误');
         }
         // key是必须要设置的
-        $this->secret_key = $key ? $key : (config('aesConfig.key') ?: 'robertvivi');
-
+        $this->secret_key = $key ? $key : (config('duxingyuConfig.aes_key') ?: 'robertvivi');
         $this->method = $method;
         $this->options = $options;
         return $this;
@@ -85,21 +84,23 @@ class Aes
     /**
      * 加密方法，对数据进行加密，返回加密后的数据
      *
-     * @param string $data 要加密的数据
+     * @param string |array $data 要加密的数据
      *
      * @return string
      *
      * @throws ErrorException
      */
-    public function encrypt(string $data)
+    public function encrypt($data)
     {
-        $data = is_array($data) ? json_encode($data) : $data;
+        if (is_array($data)) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES);
+        }
         $value = openssl_encrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
         if ($value === false) {
             throw new ErrorException('Could not encrypt the data.');
         }
         $iv = $this->iv;
-        $json = json_encode(compact('iv', 'value'));
+        $json = json_encode(compact('iv', 'value'), JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES);
         return base64_encode($json);
     }
 
