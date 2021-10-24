@@ -19,13 +19,9 @@ class AesMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $data = $request->all();
-        if (is_array($data) && $data) {
-            foreach ($data as $key => $item) {
-                $data[$key] = Aes::init()->decrypt($item);
-            }
-            $request->merge($data);
-        }
+        $params = $request->input('params');
+        $data = Aes::init()->decrypt($params);
+        $request->merge(json_decode($data, true));
         return $next($request);
     }
 }

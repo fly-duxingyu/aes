@@ -8,47 +8,27 @@
 
     var key = CryptoJS.enc.Utf8.parse("c2rFIU3ym8AXJ1aU");// 秘钥
     var iv_string = 'ABCDEFGHIGKLMNOPQRSTWVUXYZabcdefghigklmnopqrstwvuxyz0123456789=';
-    var plaintText = "eyJpdiI6ImJFVnpSMEU1WVRaVk1uRlRSSFp1VVE9PSIsInZhbHVlIjoidHorMFdrR21PQkNmUUpJaFVXeTZNenk4VjY1TmtwN3lCR3RYYUo0bThjOEx0dUtKVW1mOUliemRZVzZVNkpmZSJ9=="; // 明文
     //aes加密
     function encrypt(data) {
-        if (typeof (data) == 'object' && data.constructor == Array) {
-            data = JSON.stringify(data);
-        }
         var iv = Array.from(iv_string).sort(() => 0.5 - Math.random()).join('').substr(Math.floor(Math.random() * (iv_string.length - 16)), 16);
-        var encrypted = '';
-        if (typeof (data) == 'string') {
-            var srcs = CryptoJS.enc.Utf8.parse(data);
-            encrypted = CryptoJS.AES.encrypt(srcs, key, {
-                iv: CryptoJS.enc.Utf8.parse(iv),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
-        } else {
-            data = JSON.stringify(data);
-            var srcs = CryptoJS.enc.Utf8.parse(data);
-            encrypted = CryptoJS.AES.encrypt(srcs, key, {
-                iv: CryptoJS.enc.Utf8.parse(iv),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            })
-        }
+        data = JSON.stringify(data);
+        var srcs = CryptoJS.enc.Utf8.parse(data);
+        var encrypted = CryptoJS.AES.encrypt(srcs, key, {
+            iv: CryptoJS.enc.Utf8.parse(iv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        })
         encrypted = encrypted.toString();
         var new_data = {};
         new_data.iv = iv;
         new_data.value = encrypted;
         return Base64.encode(JSON.stringify(new_data));
-
     }
 
     var data = {};
     data.id = 23;
-    data.name = 'dsfsd';
-    data.sdsa = 4324543;
-    var mycars = new Array()
-    mycars[0] = "Saab"
-    mycars[1] = "Volvo"
-    mycars[2] = "BMW"
-    console.log(encrypt(mycars));
+    data.name = '323';
+    console.log(encrypt(data));
 
     // aes解密
     function decrypt(data) {
@@ -63,7 +43,7 @@
         return JSON.parse(decryptedStr.toString());
     }
 
-    var s = decrypt('eyJpdiI6Ikd4SG9EdEdRbTlwYTVsT0kiLCJ2YWx1ZSI6InNwZ0FUc0RUdEZCeUNHWnZYTWN4ZHc9PSJ9');
+    var s = decrypt('eyJpdiI6Ij1RT242MTVIb0NaSTl2Z0siLCJ2YWx1ZSI6IkJCd0lINU9hbU41b2VzbjgxRXlEclZaZThON1lQclBWLzhqalRmUmVKTnM9In0=');
     console.log(s);
 </script>
 
