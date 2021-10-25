@@ -1,4 +1,4 @@
 <?php
 return [
-    'key' => 'nprRImwBDWQ93jz4'
+    'aes_key' => 'nprRImwBDWQ93jz4'
 ];

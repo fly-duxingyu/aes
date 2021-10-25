@@ -7,7 +7,7 @@
 ```
 <?php
 return [
-    'key' => 'nprRImwBDWQ93jz4' //加密的key
+    'aes_key' => 'nprRImwBDWQ93jz4' //加密的key
 ];
 ```
 #####
