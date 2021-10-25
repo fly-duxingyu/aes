@@ -6,6 +6,8 @@ use Closure;
 use Duxingyu\Aes\Php\Aes;
 use ErrorException;
 use Illuminate\Http\Request;
+use Cache;
+use Config;
 
 class AesMiddleware
 {
@@ -22,6 +24,14 @@ class AesMiddleware
         $params = $request->input('params');
         $dataJson = Aes::init()->decrypt($params);
         $data = $dataJson ? json_decode($dataJson, true) : [];
+        if (!empty($data['unique_key'])) {
+            if (Cache::has($data['unique_key'])) {
+                return response(['message' => '请勿重复操作,稍后再试', 'code' => 401]);
+            }
+            $time = Config::get('duxingyuConfig.repeat_click_time') ?: 3;
+            Cache::set($data['unique_key'], $dataJson, $time);
+        }
+        unset($data['unique_key']);
         $request->merge($data);
         return $next($request);
     }
