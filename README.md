@@ -7,7 +7,8 @@
 ```
 <?php
 return [
-    'aes_key' => 'nprRImwBDWQ93jz4' //加密的key
+    "aes_key" => "c2rFIU3ym8AXJ1aU",//aes加密key
+    "repeat_click_time" => 10,//防止重复点击时间
 ];
 ```
 #####
@@ -45,3 +46,6 @@ protected $middlewareGroups = [
         ],
     ];
 ```
+####
+重复点击验证需要传递unique_key字段
+![img.png](img.png)
