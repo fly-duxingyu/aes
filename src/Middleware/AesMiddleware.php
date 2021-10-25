@@ -22,17 +22,19 @@ class AesMiddleware
     public function handle(Request $request, Closure $next)
     {
         $params = $request->input('params');
-        $dataJson = Aes::init()->decrypt($params);
-        $data = $dataJson ? json_decode($dataJson, true) : [];
-        if (!empty($data['unique_key'])) {
-            if (Cache::has($data['unique_key'])) {
-                return response(['message' => '请勿重复操作,稍后再试', 'code' => 401]);
+        if ($params) {
+            $dataJson = Aes::init()->decrypt($params);
+            $data = $dataJson ? json_decode($dataJson, true) : [];
+            if (!empty($data['unique_key'])) {
+                if (Cache::has($data['unique_key'])) {
+                    return response(['message' => '请勿重复操作,稍后再试', 'code' => 401]);
+                }
+                $time = Config::get('duxingyuConfig.repeat_click_time') ?: 3;
+                Cache::set($data['unique_key'], $dataJson, $time);
             }
-            $time = Config::get('duxingyuConfig.repeat_click_time') ?: 3;
-            Cache::set($data['unique_key'], $dataJson, $time);
+            unset($data['unique_key']);
+            $request->merge($data);
         }
-        unset($data['unique_key']);
-        $request->merge($data);
         return $next($request);
     }
 }
