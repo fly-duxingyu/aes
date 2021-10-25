@@ -92,7 +92,7 @@ class Aes
      */
     public function encrypt($data)
     {
-        if (is_array($data)) {
+        if (is_array($data) || is_object($data)) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES);
         }
         $value = openssl_encrypt($data, $this->method, $this->secret_key, $this->options, $this->iv);
